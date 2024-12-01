@@ -1,5 +1,4 @@
 {
-        //"name": "template-javascript",
         "dockerComposeFile": ["docker-compose.yml"],
         "service": "app",
 	"workspaceFolder": "/workspaces",
