@@ -1,7 +1,7 @@
 {
-    "name": "template-javascript",
-    "dockerComposeFile": ["docker-compose.yml"],
-    "service": "app",
+        "name": "template-javascript",
+        "dockerComposeFile": ["docker-compose.yml"],
+        "service": "app",
 	"workspaceFolder": "/workspaces",
     
 	"customizations": {
@@ -10,9 +10,7 @@
 				"ritwickdey.liveserver"
 			]
 		}
-
 	},
 
 	"postCreateCommand": "sudo chown -R vscode:vscode /workspaces"
-
 }
