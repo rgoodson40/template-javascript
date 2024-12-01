@@ -1,7 +1,8 @@
 {
-	"name": "template-javascript",
+    "name": "template-javascript",
     "dockerComposeFile": ["docker-compose.yml"],
-    "service": "app"
+    "service": "app",
+    "postCreateCommand": "sudo chown -R vscode:vscode /workspaces"
 	
 	
 	//"name": "my-app",
