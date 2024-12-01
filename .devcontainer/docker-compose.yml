@@ -1,5 +1,3 @@
-# name: "template-javascript-compose-stack"
-
 services:
 
   app:
