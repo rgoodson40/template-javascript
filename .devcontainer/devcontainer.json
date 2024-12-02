@@ -1,7 +1,5 @@
 {
-        "dockerComposeFile": ["docker-compose.yml"],
-        "service": "app",
-	"workspaceFolder": "/workspaces",
+        "image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
