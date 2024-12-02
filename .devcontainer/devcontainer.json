@@ -2,7 +2,15 @@
         "dockerComposeFile": ["docker-compose.yml"],
         "service": "app",
 	"workspaceFolder": "/workspaces",
-    
+
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"version": "latest",
+			"enableNonRootDocker": "true",
+			"moby": "true"
+		}
+	},
+	
 	"customizations": {
 		"vscode": {
 			"extensions": [
