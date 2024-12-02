@@ -1,11 +1,8 @@
 services:
 
   app:
-    build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
-      target: develop
-    command: tail -f /dev/null
+    image: mcr.microsoft.com/devcontainers/base:bullseye
+    # command: tail -f /dev/null
     networks:
       - custom_network
 
