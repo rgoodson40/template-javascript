@@ -1,7 +1,10 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+    // Base Image
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
 	"features": {
+		// Install 'Docker Outside of Docker' in order to be able to use the 
+		// host's docker engine from within the container
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
 			"version": "latest",
 			"enableNonRootDocker": "true",
@@ -12,13 +15,13 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				// Install Live Server within Container
 				"ritwickdey.liveserver"
-			],
-			"settings": {
-				"docker.commands.run": "${containerCommand} run --rm -d -p 8080:80 ${tag}"
-			}
+			]
 		}
 	},
 
-	"postCreateCommand": "sudo chown -R vscode:vscode /workspaces"
+	// Set the ownership of the /workspaces folder to the default user in order to 
+	// be able work with the files within the workspaces folder
+	"postCreateCommand": "sudo chown -R ${User}:${User} /workspaces"
 }

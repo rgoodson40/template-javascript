@@ -1,0 +1,9 @@
+services:
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      # Forward port 80 in container because NGINX runs on port 80
+      # Forward to port 8080 on host because port 80
+      - 8080:80
