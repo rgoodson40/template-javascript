@@ -13,7 +13,10 @@
 		"vscode": {
 			"extensions": [
 				"ritwickdey.liveserver"
-			]
+			],
+			"settings": {
+				"docker.commands.run": "${containerCommand} run --rm -d -p 8080:80 ${tag}"
+			}
 		}
 	},
 
