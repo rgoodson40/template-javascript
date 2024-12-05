@@ -30,4 +30,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest3
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:$(git rev-parse --short "$GITHUB_SHA")
