@@ -26,7 +26,7 @@ on:
       #   branches: [ "main" ]
         
 env:
-  IS_LATEST: ${{ inputs.latest_version }} == 'Latest'
+  IS_LATEST: ${{ ${{ inputs.latest_version }} == 'Latest' }}
   TAG: ${{ inputs.latest_version == 'Latest' && '' || inputs.version }}
   # TAG: ${{ inputs.version }}
 
