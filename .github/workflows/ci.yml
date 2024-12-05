@@ -26,6 +26,7 @@ on:
       #   branches: [ "main" ]
         
 env:
+  IS_LATEST: inputs.latest_version == 'Latest'
   TAG: ${{ inputs.latest_version == 'Latest' && '' || inputs.version }}
   # TAG: ${{ inputs.version }}
 
@@ -50,7 +51,7 @@ jobs:
       #       type=sha 
       
       - name: "Say Hello Mona it's Monday"
-        run: echo "latest_version input is ${{ inputs.latest_version }}. Tag is $TAG"
+        run: echo "latest_version input is ${{ inputs.latest_version }}. Is_Latest variable = $IS_LATEST. Tag is $TAG"
       
       - name: Checkout code
         uses: actions/checkout@v3
