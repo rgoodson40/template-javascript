@@ -5,6 +5,7 @@
 name: Build Image and Push to DockerHub
 
 on:
+  # Manual Trigger
   workflow_dispatch:
     inputs:
       version:
@@ -12,8 +13,10 @@ on:
         required: false
         type: string
 
-  # push:
-  #   branches: [ "main" ]
+  # Always build and push the latest to DockerHub (tagged as 'Latest') when the code is pushed to the GitHub repo 
+  push:
+    branches: [ "main" ]
+    
   # pull_request:
   #   branches: [ "main" ]
         
@@ -28,6 +31,9 @@ jobs:
 
     steps:
       # If 'Version' was specified, this step will set the value of DOCKER_TAG to the specified version number
+      - run: echo "event name is:" ${{ github.event_name }} 
+      - run: echo "event type is:" ${{ github.event.action }} 
+      
       - name: Sets DOCKER_TAG to specified version
         if: ${{ inputs.version != '' }}
         run: |
@@ -83,14 +89,4 @@ jobs:
           context: .
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.DOCKER_TAG }}
-          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ inputs.version }}
           #tags: ${{ steps.meta.outputs.tags }}
-
-      #  # If 'Version' was NOT specified, this action will build the docker image from the latest commit and push it to DockerHub using the 'Latest' tag
-      # - name: Build and Push Latest
-      #   if: ${{ inputs.version == '' }}
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
