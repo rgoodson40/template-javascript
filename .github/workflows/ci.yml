@@ -22,6 +22,7 @@ on:
         
 env:
   TAG: ${{ inputs.tag }}
+  DAY_OF_WEEK: Monday
     
         
   # push:
@@ -35,6 +36,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      Greeting: Hello
+
     steps:
       # # Uses the Docker metadata action to create a docker tag containing the git commit hash (sha)
       # - name: Docker meta
@@ -45,7 +49,12 @@ jobs:
       #       ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
       #     tags: |
       #       type=sha
-          
+      
+      - name: "Say Hello Mona it's Monday"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        env:
+          First_Name: Mona    
+      
       - name: Checkout code
         uses: actions/checkout@v3
         with:
