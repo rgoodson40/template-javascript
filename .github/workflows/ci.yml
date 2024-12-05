@@ -51,7 +51,7 @@ jobs:
       #       type=sha
       
       - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! Tag is $TAG"
         env:
           First_Name: Mona    
       
