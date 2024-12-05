@@ -26,18 +26,13 @@ on:
       #   branches: [ "main" ]
         
 env:
-  #IS_LATEST: ${{ ${{ inputs.latest_version }} == 'Latest' }}
-  #GIT_TAG: ${{ inputs.latest_version == 'Latest' && '' || inputs.version }}
-  # TAG: ${{ inputs.version }}
+  GIT_TAG: ${{ inputs.version }}
 
 jobs:
 
   build-push:
 
     runs-on: ubuntu-latest
-
-    env:
-      Greeting: Hello
 
     steps:
       # # Uses the Docker metadata action to create a docker tag containing the git commit hash (sha)
@@ -48,27 +43,12 @@ jobs:
       #     images: |
       #       ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
       #     tags: |
-      #       type=sha 
-      
-      # Set $GIT_TAG to blank is 'Latest' was chosen
-      - name: Set Git Tag to Blank
-        if: inputs.latest_version == 'Latest'
-        env:
-          TAG: "It was latest"
-
-      # Set $GIT_TAG to the version that was entered if 'Specific Version' was chosen
-      - name: Set Git Tag to the Entered Version
-        if: inputs.latest_version == 'Specific Version'
-        env:
-          TAG: "It was specific version"
-        
-      - name: "Say Hello Mona it's Monday"
-        run: echo "latest_version input is ${{ inputs.latest_version }}. Is_Latest variable = $IS_LATEST. Tag is $TAG"
+      #       type=sha
       
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.TAG }}
+          ref: ${{ env.GIT_TAG }}
       
       # Start by logging into DockerHub account
       - name: Login to Docker Hub
