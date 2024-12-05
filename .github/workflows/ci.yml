@@ -15,7 +15,7 @@ on:
         - Specific Version
         default: 'Latest'
         required: true
-      tags:
+      tag:
         description: Version (Must Match Git Tag)
         required: false
         type: string
@@ -44,8 +44,8 @@ jobs:
           
       - name: Checkout code
         uses: actions/checkout@v3
-        # with:
-        #   ref: ${{ inputs.tag }}
+        with:
+          ref: ${{ inputs.tag }}
       
       # Start by logging into DockerHub account
       - name: Login to Docker Hub
