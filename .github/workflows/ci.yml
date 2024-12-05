@@ -30,7 +30,7 @@ jobs:
       # This step is run when the tag is release-XXX
       - name: Sets GIT_TAG to specified version
         run: |
-          echo "GIT_TAG=inputs.version" >> $GITHUB_ENV
+          echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
         if: ${{ inputs.version != '' }}
 
       # # This step is run when the tag is staging-XXX
