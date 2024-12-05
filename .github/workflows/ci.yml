@@ -19,16 +19,15 @@ on:
         description: Version (Must Match Git Tag)
         required: false
         type: string
+
+      # push:
+      #   branches: [ "main" ]
+      # pull_request:
+      #   branches: [ "main" ]
         
 env:
-  TAG: ${{ inputs.version }}
-  DAY_OF_WEEK: Monday
-    
-        
-  # push:
-  #   branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
+  TAG: ${{ inputs.latest_version == 'Latest' && '' || inputs.version }}
+  # TAG: ${{ inputs.version }}
 
 jobs:
 
@@ -48,12 +47,10 @@ jobs:
       #     images: |
       #       ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
       #     tags: |
-      #       type=sha
+      #       type=sha 
       
       - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! Tag is $TAG"
-        env:
-          First_Name: Mona    
+        run: echo "Tag is $TAG"
       
       - name: Checkout code
         uses: actions/checkout@v3
