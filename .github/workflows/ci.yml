@@ -57,12 +57,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         
-      # This action will build the docker image and push it to DockerHub using the 'Latest' tag is the Version was not specified
-      - name: Build and push
-        if: ${{ inputs.version == '' }}
+      # If 'Version' was specified, this action will build the docker image from the commit that's tagged with the specified version
+      # and push the image to DockerHug with the specified version as the tag
+      - name: Build and Push Specific Version
+        if: ${{ inputs.version != '' }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
           #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.meta.outputs.tags }}
+
+       # If 'Version' was NOT specified, this action will build the docker image from the latest commit and push it to DockerHub using the 'Latest' tag
+      - name: Build and Push Latest
+        if: ${{ inputs.version == '' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
