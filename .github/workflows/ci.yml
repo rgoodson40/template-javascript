@@ -39,16 +39,17 @@ jobs:
         run: |
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
 
-      - name: "Say Hello Mona it's Monday"
-        run: echo "DOCKER_TAG is $DOCKER_TAG"
+      # - name: "Say Hello Mona it's Monday"
+      #   run: echo "DOCKER_TAG is $DOCKER_TAG"
 
-        
+      # This action will check out the code that has been tagged with the specified version, 
+      # or it will  check out the latest commit if version was not specified
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           ref: ${{ inputs.version }}
       
-      # Start by logging into DockerHub account
+      # Log into DockerHub account
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -76,19 +77,20 @@ jobs:
       # If 'Version' was specified, this action will build the docker image from the commit that's tagged with the specified version
       # and push the image to DockerHug with the specified version as the tag
       - name: Build and Push Specific Version
-        if: ${{ inputs.version != '' }}
+        # if: ${{ inputs.version != '' }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ inputs.version }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:$DOCKER_TAG
+          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ inputs.version }}
           #tags: ${{ steps.meta.outputs.tags }}
 
-       # If 'Version' was NOT specified, this action will build the docker image from the latest commit and push it to DockerHub using the 'Latest' tag
-      - name: Build and Push Latest
-        if: ${{ inputs.version == '' }}
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+      #  # If 'Version' was NOT specified, this action will build the docker image from the latest commit and push it to DockerHub using the 'Latest' tag
+      # - name: Build and Push Latest
+      #   if: ${{ inputs.version == '' }}
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
