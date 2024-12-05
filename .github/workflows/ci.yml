@@ -8,7 +8,8 @@ on:
   #   branches: [ "main" ]
 
 env:
-  git_hash: $(git rev-parse --short "$GITHUB_SHA")
+  #git_hash: $(git rev-parse --short "$GITHUB_SHA")
+  git_hash: $(git rev-parse --short HEAD)
 
 jobs:
 
@@ -33,5 +34,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.git_hash }}
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.git_hash }}
+          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
