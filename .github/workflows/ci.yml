@@ -21,7 +21,7 @@ on:
         type: string
         
 env:
-  TAG: ${{ inputs.tag }}
+  TAG: ${{ inputs.version }}
   DAY_OF_WEEK: Monday
     
         
