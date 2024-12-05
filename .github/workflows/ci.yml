@@ -7,16 +7,8 @@ name: Build Image and Push to DockerHub
 on:
   workflow_dispatch:
     inputs:
-      latest_version:
-        description: Build Latest or Specific Version?
-        type: choice
-        options:
-        - Latest
-        - Specific Version
-        default: 'Latest'
-        required: true
       version:
-        description: Version (Must Match Git Tag)
+        description: Version (Must Match Git Tag. Leave blank for Latest)
         required: false
         type: string
 
@@ -25,8 +17,8 @@ on:
       # pull_request:
       #   branches: [ "main" ]
         
-env:
-  GIT_TAG: ${{ inputs.version }}
+# env:
+#   GIT_TAG: ${{ inputs.version }}
 
 jobs:
 
@@ -48,7 +40,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.GIT_TAG }}
+          ref: ${{ inputs.version }}
       
       # Start by logging into DockerHub account
       - name: Login to Docker Hub
