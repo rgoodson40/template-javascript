@@ -48,4 +48,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.meta.outputs.tags }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.meta.outputs.tags }}
