@@ -1,3 +1,7 @@
+# This workflow will:
+# 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest' and the git commit hash (sha)
+# 2) Update the Docker image to DockerHub repository using the same name as the GitHub repository
+
 name: Build Image and Push to DockerHub
 
 on:
@@ -7,10 +11,6 @@ on:
   # pull_request:
   #   branches: [ "main" ]
 
-#env:
-  #git_hash: $(git rev-parse --short "$GITHUB_SHA")
-  #git_hash: $(git rev-parse --short HEAD)
-
 jobs:
 
   build-push:
@@ -18,13 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Declare some variables
-      #   shell: bash
-      #   run: |
-      #     echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-
-      -
-        name: Docker meta
+      # Uses the Docker metadata action to create a docker tag containing the git commit hash (sha)
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5.6.1
         with:
@@ -33,22 +28,24 @@ jobs:
           tags: |
             type=sha
           
+      # Start by logging into DockerHub account
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           
+      # QEMU is used by the docker/build-push-action action
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         
+      # Buildx is used by the docker/build-push-action action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         
+      # This action will build the docker image and push it to DockerHub using the tag generated in docker/metadata-action
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.meta.outputs.tags }}
-          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ steps.meta.outputs.tags }}
-          #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
