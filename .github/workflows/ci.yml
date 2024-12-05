@@ -12,10 +12,10 @@ on:
         required: false
         type: string
 
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
         
 # env:
 #   GIT_TAG: ${{ inputs.version }}
@@ -27,20 +27,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # This step is run when the tag is release-XXX
-      - name: Sets GIT_TAG to specified version
-        run: |
-          echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
+      # If 'Version' was specified, this step will set the value of DOCKER_TAG to the specified version number
+      - name: Sets DOCKER_TAG to specified version
         if: ${{ inputs.version != '' }}
+        run: |
+          echo "DOCKER_TAG=${{ inputs.version }}" >> $GITHUB_ENV
 
-      # # This step is run when the tag is staging-XXX
-      # - name: Sets env vars for staging
-      #   run: |
-      #     echo "DOCKER_IMAGE_NAME=my.docker.repo/awesome-image:staging" >> $GITHUB_ENV
-      #   if: ${{ inputs.version == '' }}
+      # If 'Version' was NOT specified, this step will set the value of DOCKER_TAG to 'Latest'
+      - name: Sets DOCKER_TAG to 'Latest'
+        if: ${{ inputs.version == '' }}
+        run: |
+          echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
 
       - name: "Say Hello Mona it's Monday"
-        run: echo "GIT_TAG is $GIT_TAG"
+        run: echo "DOCKER_TAG is $DOCKER_TAG"
 
         
       - name: Checkout code
