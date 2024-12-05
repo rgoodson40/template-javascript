@@ -58,8 +58,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
         
       # This action will build the docker image and push it to DockerHub using the 'Latest' tag is the Version was not specified
-      - if: ${{ inputs.version }} == ''
-        name: Build and push
+      - name: Build and push
+        if: ${{ inputs.version == '' }}
         uses: docker/build-push-action@v6
         with:
           context: .
