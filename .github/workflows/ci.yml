@@ -1,11 +1,25 @@
 # This workflow will:
-# 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest' and the git commit hash (sha)
-# 2) Update the Docker image to DockerHub repository using the same name as the GitHub repository
+# 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest'
+# 2) Push the Docker image to DockerHub repository by the same name as the GitHub repository
 
 name: Build Image and Push to DockerHub
 
 on:
   workflow_dispatch:
+    inputs:
+      latest_version:
+        description: Build Latest or Specific Version?
+        type: choice
+        options:
+        - Latest
+        - Specific Version
+        default: 'Latest'
+        required: true
+      tags:
+        description: Version (Must Match Git Tag)
+        required: false
+        type: string
+        
   # push:
   #   branches: [ "main" ]
   # pull_request:
@@ -18,19 +32,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Uses the Docker metadata action to create a docker tag containing the git commit hash (sha)
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5.6.1
-        with:
-          images: |
-            ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
-          tags: |
-            type=sha
-          # labels: |
-          # org.opencontainers.image.title=MyCustomTitle
-          # org.opencontainers.image.description=Another description
-          # org.opencontainers.image.vendor=MyCompany
+      # # Uses the Docker metadata action to create a docker tag containing the git commit hash (sha)
+      # - name: Docker meta
+      #   id: meta
+      #   uses: docker/metadata-action@v5.6.1
+      #   with:
+      #     images: |
+      #       ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
+      #     tags: |
+      #       type=sha
           
       # Start by logging into DockerHub account
       - name: Login to Docker Hub
@@ -54,4 +64,3 @@ jobs:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
           #tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
