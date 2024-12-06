@@ -21,7 +21,7 @@ on:
 
   # When a Release is published, build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
   release:
-    types: [published]
+    types: [published,edited]
 
 
 jobs:
@@ -57,8 +57,8 @@ jobs:
       - name: Set GIT_TAG and DOCKER_TAG to Git Tag from release
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
-          echo "DOCKER_TAG=${{ inputs.version }}" >> $GITHUB_ENV
+          echo "GIT_TAG=${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "DOCKER_TAG=${{ github.ref_name }}" >> $GITHUB_ENV
 
       - name: "Say Hello Mona it's Monday"
         run: |
