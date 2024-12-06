@@ -32,9 +32,9 @@ jobs:
 
     steps:
       - run: |
-        echo "event name is:" ${{ github.event_name }}
-        echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-        echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+          echo "event name is:" ${{ github.event_name }}
+          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
       # If event type is 'workflow_dispatch' and 'Version' is specified, this step will 
       # set the value of GIT_TAG and DOCKER_TAG to the specified version number
