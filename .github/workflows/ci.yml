@@ -43,7 +43,7 @@ jobs:
       - name: Sets DOCKER_TAG to 'Latest'
         if: ${{ inputs.version == '' }}
         run: |
-          echo "GIT_TAG=''" >> $GITHUB_ENV
+          echo "GIT_TAG=" "" >> $GITHUB_ENV
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
 
       - name: "Say Hello Mona it's Monday"
