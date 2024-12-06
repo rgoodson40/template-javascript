@@ -17,11 +17,8 @@ on:
   push:
     branches: [ "main" ]
     
-  # pull_request:
-  #   branches: [ "main" ]
-        
-# env:
-#   GIT_TAG: ${{ inputs.version }}
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
 
@@ -43,7 +40,7 @@ jobs:
       # If event type is 'workflow_dispatch' and 'Version' is NOT specified OR the event type is 'push', this step will 
       # set the value of GIT_TAG to blank DOCKER_TAG to 'Latest'
       - name: Sets DOCKER_TAG to 'Latest'
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.version == '') || github.event_name == 'push' }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.version == '') || github.event_name == 'push' || github.event_name == 'pull_request' }}
         run: |
           echo "GIT_TAG=" "" >> $GITHUB_ENV
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
