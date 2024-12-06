@@ -14,8 +14,8 @@ on:
         type: string
 
   # Always build and push the latest to DockerHub (tagged as 'Latest') when the code is pushed to the GitHub repo 
-  push:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
     
   # pull_request:
   #   branches: [ "main" ]
@@ -56,7 +56,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{ env.GIT_TAG }}
       
       # Log into DockerHub account
       - name: Login to Docker Hub
