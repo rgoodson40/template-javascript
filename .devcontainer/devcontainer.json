@@ -16,7 +16,9 @@
 		"vscode": {
 			"extensions": [
 				// Install Live Server within Container
-				"ritwickdey.liveserver"
+				"ritwickdey.liveserver",
+				// Install Git Lens within Container
+				"eamodio.gitlens"
 			]
 		}
 	},
