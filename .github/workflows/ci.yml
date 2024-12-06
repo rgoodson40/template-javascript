@@ -16,9 +16,6 @@ on:
   # Always build and push the latest to DockerHub (tagged as 'Latest') when the code is pushed to the GitHub repo 
   push:
     branches: [ "main" ]
-    
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
 
