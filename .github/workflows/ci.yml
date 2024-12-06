@@ -1,5 +1,5 @@
 # This workflow will:
-# 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest'
+# 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest' or the version specified
 # 2) Push the Docker image to DockerHub repository by the same name as the GitHub repository
 
 name: Build Image and Push to DockerHub
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version (Must Match Git Tag. Leave blank for Latest)
+        description: Version (Must Match Git Tag. Leave blank for latest)
         required: false
         type: string
 
@@ -30,23 +30,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # If 'Version' was specified, this step will set the value of DOCKER_TAG to the specified version number
-      - run: echo "event name is:" ${{ github.event_name }} 
-      - run: echo "event type is:" ${{ github.event.action }} 
+      - run: echo "event name is:" ${{ github.event_name }}
       
+      # If 'Version' was specified, this step will set the value of DOCKER_TAG to the specified version number
       - name: Sets DOCKER_TAG to specified version
         if: ${{ inputs.version != '' }}
         run: |
+          echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
           echo "DOCKER_TAG=${{ inputs.version }}" >> $GITHUB_ENV
 
       # If 'Version' was NOT specified, this step will set the value of DOCKER_TAG to 'Latest'
       - name: Sets DOCKER_TAG to 'Latest'
         if: ${{ inputs.version == '' }}
         run: |
+          echo "GIT_TAG=''" >> $GITHUB_ENV
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
 
-      # - name: "Say Hello Mona it's Monday"
-      #   run: echo "DOCKER_TAG is $DOCKER_TAG"
+      - name: "Say Hello Mona it's Monday"
+        run: |
+          echo "GIT_TAG is $GIT_TAG"
+          echo "DOCKER_TAG is $DOCKER_TAG"
 
       # This action will check out the code that has been tagged with the specified version, 
       # or it will  check out the latest commit if version was not specified
