@@ -14,10 +14,15 @@ on:
 
   # When a commit is pushed to 'main', always build and push the latest to DockerHub (tagged as 'Latest')
   # When a tag is pushed to 'main', build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
-  push:
-    branches: [ "main" ]
-    tags:
-      - 'v*'
+  # push:
+  #   branches: [ "main" ]
+    # tags:
+    #   - 'v*'
+
+  # When a Release is published, build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
+  release:
+    types: [published]
+
 
 jobs:
 
@@ -26,11 +31,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "event name is:" ${{ github.event_name }}
+      - run: |
+        echo "event name is:" ${{ github.event_name }}
+        echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+        echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
       # If event type is 'workflow_dispatch' and 'Version' is specified, this step will 
       # set the value of GIT_TAG and DOCKER_TAG to the specified version number
-      - name: Sets DOCKER_TAG to specified version
+      - name: Set GIT_TAG and DOCKER_TAG to specified version
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
         run: |
           echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
@@ -38,18 +46,19 @@ jobs:
 
       # If event type is 'workflow_dispatch' and 'Version' is NOT specified OR the event type is 'push', this step will 
       # set the value of GIT_TAG to blank DOCKER_TAG to 'Latest'
-      - name: Sets DOCKER_TAG to 'Latest'
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.version == '') || github.event_name == 'push' || github.event_name == 'pull_request' }}
+      - name: Set GIT_TAG to blank and DOCKER_TAG to 'Latest'
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.version == '') || github.event_name == 'push' }}
         run: |
           echo "GIT_TAG=" "" >> $GITHUB_ENV
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
 
-      # # If event type is 'push', this step will set the value of GIT_TAG to DOCKER_TAG to 'Latest'
-      # - name: Sets DOCKER_TAG to 'Latest'
-      #   if: ${{ github.event_name == "workflow dispatch" && inputs.version == '' }}
-      #   run: |
-      #     echo "GIT_TAG=" "" >> $GITHUB_ENV
-      #     echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
+      # If event type is 'release', this step will 
+      # set the value of GIT_TAG and DOCKER_TAG to the git tag of the release
+      - name: Set GIT_TAG and DOCKER_TAG to Git Tag from release
+        if: ${{ github.event_name == 'release' }}
+        run: |
+          echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
+          echo "DOCKER_TAG=${{ inputs.version }}" >> $GITHUB_ENV
 
       - name: "Say Hello Mona it's Monday"
         run: |
