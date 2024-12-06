@@ -16,7 +16,9 @@
 		"vscode": {
 			"extensions": [
 				// Install Live Server within Container
-				"ritwickdey.liveserver"
+				"ritwickdey.liveserver",
+				// Install GitHub Pull Requests Extension within Container
+				"github.vscode-pull-request-github"
 			]
 		}
 	},
