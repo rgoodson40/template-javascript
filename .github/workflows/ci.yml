@@ -14,10 +14,8 @@ on:
 
   # When a commit is pushed to 'main', always build and push the latest to DockerHub (tagged as 'Latest')
   # When a tag is pushed to 'main', build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
-  # push:
-  #   branches: [ "main" ]
-    # tags:
-    #   - 'v*'
+  push:
+    branches: [ "main" ]
 
   # When a Release is published, build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
   release:
@@ -31,11 +29,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: |
-          echo "event name is:" ${{ github.event_name }}
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-
       # If event type is 'workflow_dispatch' and 'Version' is specified, this step will 
       # set the value of GIT_TAG and DOCKER_TAG to the specified version number
       - name: Set GIT_TAG and DOCKER_TAG to specified version
@@ -60,11 +53,6 @@ jobs:
           echo "GIT_TAG=${{ github.ref_name }}" >> $GITHUB_ENV
           echo "DOCKER_TAG=${{ github.ref_name }}" >> $GITHUB_ENV
 
-      - name: "Say Hello Mona it's Monday"
-        run: |
-          echo "GIT_TAG is $GIT_TAG"
-          echo "DOCKER_TAG is $DOCKER_TAG"
-
       # This action will check out the code that has been tagged with the specified version, 
       # or it will  check out the latest commit if version was not specified
       - name: Checkout code
@@ -86,24 +74,12 @@ jobs:
       # Buildx is used by the docker/build-push-action action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      # # If 'Version' was specified, this will use the Docker metadata action to create a docker tag containing the git commit hash (sha)
-      # - name: Docker meta
-      #   id: meta
-      #   uses: docker/metadata-action@v5.6.1
-      #   with:
-      #     images: |
-      #       ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
-      #     tags: |
-      #       type=sha
       
       # If 'Version' was specified, this action will build the docker image from the commit that's tagged with the specified version
       # and push the image to DockerHug with the specified version as the tag
       - name: Build and Push Specific Version
-        # if: ${{ inputs.version != '' }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.DOCKER_TAG }}
-          #tags: ${{ steps.meta.outputs.tags }}
