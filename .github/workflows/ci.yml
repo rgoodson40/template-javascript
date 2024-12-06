@@ -21,7 +21,7 @@ on:
 
   # When a Release is published, build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
   release:
-    types: [published]
+    types: [published,edited]
 
 
 jobs:
