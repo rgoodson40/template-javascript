@@ -12,11 +12,8 @@ on:
         required: false
         type: string
 
-  # When a commit is pushed to 'main', always build and push the latest to DockerHub (tagged as 'Latest') 
-  push:
-    branches: [ "main" ]
-
-  # When a tag is pushed to 'main', build and push the commit with that tag to DockerHub (tagged in DockerHub with that version) 
+  # When a commit is pushed to 'main', always build and push the latest to DockerHub (tagged as 'Latest')
+  # When a tag is pushed to 'main', build and push the commit with that tag to DockerHub (tagged in DockerHub with that version)
   push:
     branches: [ "main" ]
     tags:
