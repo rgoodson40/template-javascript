@@ -35,7 +35,7 @@ jobs:
       # If event type is 'workflow dispatch' and 'Version' is specified, this step will 
       # set the value of GIT_TAG and DOCKER_TAG to the specified version number
       - name: Sets DOCKER_TAG to specified version
-        if: ${{ github.event_name == "workflow dispatch" && inputs.version != '' }}
+        if: ${{ github.event_name == 'workflow dispatch' && inputs.version != '' }}
         run: |
           echo "GIT_TAG=${{ inputs.version }}" >> $GITHUB_ENV
           echo "DOCKER_TAG=${{ inputs.version }}" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
       # If event type is 'workflow dispatch' and 'Version' is NOT specified OR the event type is 'push', this step will 
       # set the value of GIT_TAG to blank DOCKER_TAG to 'Latest'
       - name: Sets DOCKER_TAG to 'Latest'
-        if: ${{ (github.event_name == "workflow dispatch" && inputs.version == '') || github.event_name == "push" }}
+        if: ${{ (github.event_name == 'workflow dispatch' && inputs.version == '') || github.event_name == 'push' }}
         run: |
           echo "GIT_TAG=" "" >> $GITHUB_ENV
           echo "DOCKER_TAG=Latest" >> $GITHUB_ENV
