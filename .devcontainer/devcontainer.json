@@ -17,8 +17,8 @@
 			"extensions": [
 				// Install Live Server within Container
 				"ritwickdey.liveserver",
-				// Install Git Lens within Container
-				"eamodio.gitlens"
+				// Install GitHub Pull Requests Extension within Container
+				"github.vscode-pull-request-github"
 			]
 		}
 	},
