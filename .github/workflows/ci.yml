@@ -1,4 +1,3 @@
-# This workflow will:
 # 1) Build a Docker image from the latest commit to the main branch in the repository and tag it with 'latest' or the version specified
 # 2) Push the Docker image to DockerHub repository by the same name as the GitHub repository
 
@@ -13,9 +12,15 @@ on:
         required: false
         type: string
 
-  # Always build and push the latest to DockerHub (tagged as 'Latest') when the code is pushed to the GitHub repo 
+  # When a commit is pushed to 'main', always build and push the latest to DockerHub (tagged as 'Latest') 
   push:
     branches: [ "main" ]
+
+  # When a tag is pushed to 'main', build and push the commit with that tag to DockerHub (tagged in DockerHub with that version) 
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
 
 jobs:
 
